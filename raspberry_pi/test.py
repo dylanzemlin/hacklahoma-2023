@@ -19,6 +19,8 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 # To use a video file as input
 # cap = cv2.VideoCapture('filename.mp4')
 
+last_emotions = []
+last_emotion = "neutral"
 while True:
     # Read the frame
     ret, img = cap.read()
@@ -39,8 +41,14 @@ while True:
             face = img[y:y+h, x:x+w]
             objs = DeepFace.analyze(face, actions = ['emotion'])
             emotions = objs[0]["emotion"]
-            emotion = max(emotions.items(), key=lambda x: x[1])
-            cv2.putText(img, emotion[0], (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            # Get the best emotion
+            emotion = max(emotions, key=emotions.get)
+            last_emotions.append(emotion)
+            if len(last_emotions) > 5:
+                # Get the most common emotion
+                last_emotion = max(set(last_emotions), key=last_emotions.count)
+                last_emotions = []
+            cv2.putText(img, last_emotion, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
             cv2.imshow('Emotion View', img)
         except:
             pass
