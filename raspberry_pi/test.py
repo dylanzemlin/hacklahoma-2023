@@ -8,9 +8,7 @@ import cv2
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # To capture video from webcam.
-print("Getting video capture from webcam")
 cap = cv2.VideoCapture(0)
-print("Video capture from webcam is ready")
 if not cap.isOpened():
     print("Cannot open camera")
     exit()
@@ -23,10 +21,9 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 while True:
     # Read the frame
-    print("Reading frame from video capture")
     ret, img = cap.read()
     if not ret:
-        print("Can't receive frame (stream end?). Exiting ...")
+        print("Can't receive frame (stream end)")
         break
 
     # Convert to grayscale
