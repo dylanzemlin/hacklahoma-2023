@@ -13,12 +13,6 @@ if not cap.isOpened():
     print("Cannot open camera")
     exit()
 
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-
-# To use a video file as input
-# cap = cv2.VideoCapture('filename.mp4')
-
 last_emotions = []
 last_emotion = "neutral"
 while True:
