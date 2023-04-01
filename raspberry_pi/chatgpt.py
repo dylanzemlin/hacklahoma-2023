@@ -38,4 +38,4 @@ def prompt(text, model):
 
 
 # Print the response
-print(prompt("What is 3 + 3?", "gpt-3.5-turbo"))
+print(prompt("What is the integral of 2x", "gpt-3.5-turbo"))
