@@ -1,6 +1,9 @@
 import tkinter as tk
 import cv2
 import PIL.Image, PIL.ImageTk
+import time
+import serial
+import threading
 from deepface import DeepFace
 
 class Display:
@@ -35,52 +38,84 @@ class Display:
         self.emotions = []
 
         self.delay = 1
+        self.last_frame = None
+        self.last_coords = None
+        self.end = False
+        self.emotion_thread = threading.Thread(target=self.emotion_analysis)
+        self.emotion_thread.daemon = True
+        self.emotion_thread.start()
+        self.pico = serial.Serial('/dev/ttyACM0', 9600)
         self.update()
 
     def print_receipt(self):
-        pass
+        self.pico.write("%$".encode())
+        emotion = self.label.cget("text").split(": ")[1]
+        self.pico.write(f"{emotion.strip()}".encode())
+        self.pico.write("this is an epic quote$".encode())
+
+    def emotion_analysis(self):
+        if self.end:
+            return
+        
+        if self.last_frame is None or self.last_coords is None:
+            time.sleep(0.5)
+            self.emotion_analysis()
+            return
+
+        try:
+            frame = self.last_frame
+            x, y, w, h = self.last_coords
+            try:
+                face = frame[y:y+h, x:x+w]
+                objs = DeepFace.analyze(face, actions = ['emotion'])
+                emotions = objs[0]["emotion"]
+                emotion = max(emotions, key=emotions.get)
+                self.emotions.append(emotion)
+                if len(self.emotions) > 8:
+                    # Pop the first element
+                    self.emotions.pop(0)
+
+                # Get the most common emotion
+                emotion = max(set(self.emotions), key=self.emotions.count)
+                self.label.config(text=f"Last Emotion: {emotion}")
+
+                time.sleep(0.5)
+                self.emotion_analysis()
+            except:
+                time.sleep(0.5)
+                self.emotion_analysis()
+        except KeyboardInterrupt:
+            print("Keyboard Interrupt")
+            self.end = True
+            exit()
 
     def update(self):
         try:
-            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+            face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
             ret, frame = self.cap.read()
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             if ret:
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                faces = face_cascade.detectMultiScale(gray,scaleFactor=1.1, minNeighbors=5)
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                faces = face_cascade.detectMultiScale(gray, 1.1, 4)
                 for (x,y,w,h) in faces:
-                    cv2.rectangle(frame,(x,y),(x+w,y+h),(0, 255, 0),2)
+                    cv2.rectangle(frame, (x, y), (x + w,y + h), (0, 255, 0), 2)
 
-                image = PIL.Image.fromarray(frame)
-                image_resized = image.resize((800, 600))
-                photo = PIL.ImageTk.PhotoImage(image_resized)
+                    # Display image :)
+                    image = PIL.Image.fromarray(frame)
+                    image_resized = image.resize((800, 600))
+                    photo = PIL.ImageTk.PhotoImage(image_resized)
+                    self.canvas.create_image(0, 0, anchor=tk.NW, image=photo)
+                    self.canvas.photo = photo
 
-                self.canvas.create_image(0, 0, anchor=tk.NW, image=photo)
-                self.canvas.photo = photo
+                    self.last_coords = (x, y, w, h)
+                    self.last_frame = frame
 
-                try:
-                    face = frame[y:y+h, x:x+w]
-                    objs = DeepFace.analyze(face, actions = ['emotion'])
-                    emotions = objs[0]["emotion"]
-                    # age = objs[0]["age"]
-                    # self.age_label.config(text=f"Age: {age}")
-                    # Get the best emotion
-                    emotion = max(emotions, key=emotions.get)
-                    self.emotions.append(emotion)
-                    if len(self.emotions) > 15:
-                        # Pop the first element
-                        self.emotions.pop(0)
-
-                    # Get the most common emotion
-                    emotion = max(set(self.emotions), key=self.emotions.count)
-                    self.label.config(text=f"Last Emotion: {emotion}")
-                except:
-                    self.window.after(50, self.update)
-                    pass
+                    break
 
             self.window.after(50, self.update)
         except KeyboardInterrupt:
             print("Keyboard Interrupt")
+            self.end = True
             exit()
 
 if __name__ == "__main__":
