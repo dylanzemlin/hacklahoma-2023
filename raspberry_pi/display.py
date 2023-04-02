@@ -1,6 +1,5 @@
 import tkinter as tk
 import cv2
-import threading
 import PIL.Image, PIL.ImageTk
 from deepface import DeepFace
 
@@ -26,13 +25,17 @@ class Display:
         self.label = tk.Label(self.right_pane, text="Last Emotion: ")
         self.label.pack()
 
+        self.age_label = tk.Label(self.right_pane, text="Age: ")
+        self.age_label.pack()
+
         # Print Receipt Button
         self.button = tk.Button(self.right_pane, text="Print Receipt", command=self.print_receipt)
         self.button.pack()
 
+        self.emotions = []
+
         self.delay = 1
-        self.updateThread = threading.Thread(target=self.update)
-        self.updateThread.start()
+        self.update()
 
     def print_receipt(self):
         pass
@@ -59,17 +62,25 @@ class Display:
                     face = frame[y:y+h, x:x+w]
                     objs = DeepFace.analyze(face, actions = ['emotion'])
                     emotions = objs[0]["emotion"]
+                    # age = objs[0]["age"]
+                    # self.age_label.config(text=f"Age: {age}")
                     # Get the best emotion
                     emotion = max(emotions, key=emotions.get)
+                    self.emotions.append(emotion)
+                    if len(self.emotions) > 15:
+                        # Pop the first element
+                        self.emotions.pop(0)
+
+                    # Get the most common emotion
+                    emotion = max(set(self.emotions), key=self.emotions.count)
                     self.label.config(text=f"Last Emotion: {emotion}")
                 except:
-                    self.window.after(self.delay, self.update)
+                    self.window.after(50, self.update)
                     pass
 
-            self.window.after(self.delay, self.update)
+            self.window.after(50, self.update)
         except KeyboardInterrupt:
             print("Keyboard Interrupt")
-            self.cap.release()
             exit()
 
 if __name__ == "__main__":
@@ -82,8 +93,6 @@ if __name__ == "__main__":
         window = tk.Tk()
         app = Display(window, cap)
         window.mainloop()
-        cap.release()
     except KeyboardInterrupt:
         print("Keyboard Interrupt")
-        cap.release()
         exit()
