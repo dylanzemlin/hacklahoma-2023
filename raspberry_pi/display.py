@@ -64,9 +64,6 @@ class Display:
         self.label = tk.Label(self.right_pane, text="Last Emotion: ")
         self.label.pack()
 
-        self.age_label = tk.Label(self.right_pane, text="Age: ")
-        self.age_label.pack()
-
         # Print Receipt Button
         self.button = tk.Button(self.right_pane, text="Print Receipt", command=self.print_receipt)
         self.button.pack()
