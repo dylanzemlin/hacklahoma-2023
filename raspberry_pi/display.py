@@ -120,6 +120,7 @@ class Display:
 
                 # Get the most common emotion
                 emotion = max(set(self.emotions), key=self.emotions.count)
+                self.last_emotion = emotion
                 self.label.config(text=f"Last Emotion: {emotion}")
 
                 time.sleep(0.5)
@@ -152,7 +153,6 @@ class Display:
 
                     self.last_coords = (x, y, w, h)
                     self.last_frame = frame
-                    break
 
             self.window.after(50, self.update)
         except KeyboardInterrupt:
