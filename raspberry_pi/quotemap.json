@@ -1,0 +1,51 @@
+{
+    "angry": [
+        "\"Anger leads to the dark side, but control it, you can. Let the force guide you towards inner peace.\" - Yoda",
+        "\"Let your anger be your fuel to rise above the dark side, for only when you channel it with the light, the force will be with you, always.\" - Yoda",
+        "\"Anger leads to the dark side, but let it fuel your passion to become a force for good.\" - Yoda, Star Wars.",
+        "\"Anger may lead to the dark side, but when harnessed properly, it can ignite a flame of determination within you - fueling your path towards greatness.\" - Yoda, Star Wars.",
+        "\"Anger can lead to the dark side, but use it wisely and it can fuel your fight for justice and balance in the Force.\" - Master Yoda, Star Wars."
+    ],
+    "disgust": [
+        "\"Even in the darkest times, the Force will prevail. Let go of disgust and embrace the strength within you.\" - Yoda",
+        "\"Disgust is a path to the dark side. Choose instead to find the good in every situation and may the Force be with you.\"",
+        "\"Don't let the fear and disgust of the Dark Side consume you, for even the greatest Jedi have faced their own battles and emerged victorious.\" - Yoda, Star Wars",
+        "\"Even in the darkness of disgust, remember that the force remains within you. Do not let the turmoil of the world drag you to the dark side.\" - Yoda",
+        "\"Disgust breeds in the dark side of your mind, but the force is strong enough to overcome it. Embrace the light and let go of your hatred, for only then can you truly become a Jedi Master.\" - Yoda, Star Wars."
+    ],
+    "fear": [
+        "\"Fear is the path to the dark side. The Force can guide you through the fear, but you must trust in its guidance and find your own inner Jedi.\" - Yoda",
+        "\"Fear is the path to the dark side. But with the courage of a Jedi, the force can overcome any obstacle.\" -Yoda, Star Wars",
+        "\"Fear is the path to the dark side. Face it, conquer it, and the galaxy will be yours.\" - Yoda, StarWars",
+        "\"Remember, fear is the path to the dark side. Face your fears with the strength of a Jedi and you will find the power to overcome them.\" - Yoda, Star Wars: Episode I - The Phantom Menace",
+        "\"Feel the fear, but let the force guide you through it. Trust in the power within you, and may the force be with you always.\" - Yoda, Star Wars."
+    ],
+    "happy": [
+        "\"May the happiness be with you, always.\" - Yoda",
+        "\"Do or do not, there is no try, but when in a state of happiness, you will always succeed like a Jedi.\" - Yoda",
+        "\"Happy you are, strong in the Force you shall be. Let joy guide your journey, and may the Force be with you always.\" - Master Yoda",
+        "\"May the happiness be with you and may the Force always guide you towards joy.\" - Anonymous (modified from \"May the Force be with you\")",
+        "\"May the happiness be with you always, for in a joyful heart lies the power to overcome any obstacle.\" - Yoda"
+    ],
+    "sad": [
+        "\u201cEven the darkest moments have a ray of hope, just like the little droid R2-D2 who never gave up. May the force be with you to find the light within the darkness.\u201d",
+        "\"Even in our darkest moments, the force surrounds and guides us. Let your sadness fuel your determination to rise, just as a Jedi rises above adversity.\" - Yoda",
+        "\"Even in the darkest of times, the Force remains strong within us. Let the pain of loss fuel your determination to bring balance to the galaxy.\" - Master Yoda, Star Wars",
+        "\"Even in the darkest of times, hope still shines like a lightsaber in the hands of a Jedi.\" -  Yoda",
+        "\"Even the strongest Jedi have moments of sadness, but remember this - the Force will always be with you, guiding you towards a brighter tomorrow.\""
+    ],
+    "surprise": [
+        "\"May the surprises be with you, for they reveal new paths to triumph over the dark side and lead you to your destiny.\" - Anonymous (Jedi Code)",
+        "\"Surprise, the force is strong within you. Embrace the unexpected and journey towards greatness.\" - Yoda, Star Wars.",
+        "\"Surprise, it is the force within us that propels us forward to achieve the impossible.\" - Yoda, Star Wars.",
+        "\"Surprise is a pathway to the Force, let it guide you on a journey full of adventure and discovery.\" - Yoda",
+        "\"Surprise yourself with the power of the Force within. Let it guide you towards achieving greatness, just as a Jedi surprises their enemies with the unexpected.\" - Yoda"
+    ],
+    "neutral": [
+        "\"The Force is always with you, even in moments of neutrality. Trust your instincts and let your inner Jedi guide you towards greatness.\" - Yoda",
+        "\"Even in times of calm, may the force be with you, guiding you towards greatness.\" -Yoda",
+        "\"May the Force be with you, always. Even in neutrality, let the power of the Force guide you towards greatness.\"",
+        "\"Even in the midst of neutrality, the Force is always present. Embrace its power, let it guide your journey, and may the galaxy forever be on your side.\" -Unknown Jedi Master",
+        "\"Even when we are in a neutral state, the Force is always with us, guiding us towards our destiny.\" - Yoda"
+    ]
+}
