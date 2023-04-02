@@ -142,6 +142,7 @@ class Display:
                 faces = face_cascade.detectMultiScale(gray, 1.1, 4)
                 for (x,y,w,h) in faces:
                     cv2.rectangle(frame, (x, y), (x + w,y + h), (0, 255, 0), 2)
+                    cv2.putText(frame, self.last_emotion + f"({len(self.last_emotion)})", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
 
                     # Display image :)
                     image = PIL.Image.fromarray(frame)
