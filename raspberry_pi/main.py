@@ -25,13 +25,13 @@ last_sent = 0
 
 pico = serial.Serial("/dev/ttyACM0", 9600)
 
-def send_emotion(emotion):
+def send_emotion(emotion: str):
     quotes = quotemap[emotion]
     rand_quote = quotes[int(time.time()) % len(quotes)]
     pico.write("%$".encode())
-    stri = f"Emotion: {emotion}\n{rand_quote}$"
-    pico.write(stri.encode())
-    print(stri)
+    pico.write(f"{emotion.strip()}$".encode())
+    pico.write(f"{rand_quote.strip()}$".encode())
+    print(f"Sent {emotion} and {rand_quote} to pico")
 
 last_emotions = []
 last_emotion = "neutral"
