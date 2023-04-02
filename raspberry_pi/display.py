@@ -155,6 +155,13 @@ class Display:
                     self.last_coords = (x, y, w, h)
                     self.last_frame = frame
 
+                if len(faces) == 0:
+                    image = PIL.Image.fromarray(frame)
+                    image_resized = image.resize((800, 600))
+                    photo = PIL.ImageTk.PhotoImage(image_resized)
+                    self.canvas.create_image(0, 0, anchor=tk.NW, image=photo)
+                    self.canvas.photo = photo
+
             self.window.after(50, self.update)
         except KeyboardInterrupt:
             print("Keyboard Interrupt")
