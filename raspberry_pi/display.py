@@ -88,14 +88,14 @@ class Display:
         if self.last_emotion is None:
             return
 
-        self.pico.write("%$".encode())
-        self.pico.write(f"{self.last_emotion.strip()}$".encode())
         try:
             quote = prompt(f"Generate a inspiration quote, my current emotional state is {self.last_emotion.strip()}. Make it starwars themed", "gpt-3.5-turbo")
-            print(quote)
+            self.pico.write("%$".encode())
+            self.pico.write(f"{self.last_emotion.strip()}$".encode())
             self.pico.write(f"{quote}$".encode())
         except:
-            print("Failed to get quote")
+            self.pico.write("%$".encode())
+            self.pico.write(f"{self.last_emotion.strip()}$".encode())
             self.pico.write("Error fetching quote$".encode())
 
     def emotion_analysis(self):
