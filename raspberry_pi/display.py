@@ -21,17 +21,21 @@ class Display:
         self.canvas = tk.Canvas(self.left_pane, width=800, height=600)
         self.canvas.pack()
 
-        self.label = tk.Label(self.right_pane, text="This GUI is garbage \n but its alright")
+        self.label = tk.Label(self.right_pane, text="Last Emotion: ")
         self.label.pack()
 
-        self.delay = 15
+        self.delay = 1
         self.update()
 
     def update(self):
+        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
         ret, frame = self.cap.read()
         if ret:
-
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            faces = face_cascade.detectMultiScale(gray,scaleFactor=1.1, minNeighbors=5)
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            for (x,y,w,h) in faces:
+                cv2.rectangle(frame,(x,y),(x+w,y+h),(0, 255, 0),2)
 
             image = PIL.Image.fromarray(frame)
             image = image.resize((800, 600))
