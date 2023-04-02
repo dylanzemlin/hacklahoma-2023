@@ -1,10 +1,46 @@
 import tkinter as tk
 import cv2
+import requests
 import PIL.Image, PIL.ImageTk
 import time
 import serial
 import threading
 from deepface import DeepFace
+
+f = open(".env", "r")
+lines = f.readlines()
+f.close()
+
+# Load Environment Variables
+env = {}
+for line in lines:
+    line = line.strip()
+    if line.startswith("#"):
+        continue
+    key, value = line.split("=")
+    env[key.strip()] = value.strip()
+
+def prompt(text, model):
+    url = "https://api.openai.com/v1/chat/completions"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + env["OPENAI_TOKEN"],
+        "OpenAI-Organization": env["OPENAI_ORG_ID"]
+    }
+    data = {
+        "model": model,
+        "messages": [
+            {
+                "role": "user",
+                "content": text
+            }
+        ]
+    }
+    response = requests.post(url, headers=headers, json=data, timeout=3)
+    json = response.json()
+    if json["object"] != "chat.completion":
+        return "Error"
+    return json["choices"][0]["message"]["content"]
 
 class Display:
     def __init__(self, window, cap):
@@ -44,14 +80,21 @@ class Display:
         self.emotion_thread = threading.Thread(target=self.emotion_analysis)
         self.emotion_thread.daemon = True
         self.emotion_thread.start()
+        self.last_emotion = None
         self.pico = serial.Serial('/dev/ttyACM0', 9600)
         self.update()
 
     def print_receipt(self):
+        if self.last_emotion is None:
+            return
+
         self.pico.write("%$".encode())
-        emotion = self.label.cget("text").split(": ")[1]
-        self.pico.write(f"{emotion.strip()}".encode())
-        self.pico.write("this is an epic quote$".encode())
+        self.pico.write(f"{self.last_emotion.strip()}$".encode())
+        try:
+            quote = prompt(f"Generate a inspiration quote, my current emotional state is {self.last_emotion.strip()}. Make it starwars themed", "gpt-3.5-turbo")
+            self.pico.write(f"{quote}$".encode())
+        except:
+            self.pico.write("Error fetching quote$".encode())
 
     def emotion_analysis(self):
         if self.end:
@@ -109,7 +152,6 @@ class Display:
 
                     self.last_coords = (x, y, w, h)
                     self.last_frame = frame
-
                     break
 
             self.window.after(50, self.update)
