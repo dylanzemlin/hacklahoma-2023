@@ -28,7 +28,8 @@ pico = serial.Serial("/dev/ttyACM0", 9600)
 def send_emotion(emotion):
     quotes = quotemap[emotion]
     rand_quote = quotes[int(time.time()) % len(quotes)]
-    stri = f"%Emotion: {emotion}\n{rand_quote}$"
+    pico.write("%$".encode())
+    stri = f"Emotion: {emotion}\n{rand_quote}$"
     pico.write(stri.encode())
     print(stri)
 
